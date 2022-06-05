@@ -49,8 +49,8 @@ class Email{
         $mail->Host = 'smtp.mailtrap.io';
         $mail->SMTPAuth = true;
         $mail->Port = 2525;
-        $mail->Username = '44aaacc3f28bcb';
-        $mail->Password = 'b9a0e5694c2fc6';
+        $mail->Username = 'ba7570fe5dba57';
+        $mail->Password = '3a6512a9f4a52f';
 
         $mail->setFrom('cuentas@uptask.com');
         $mail->addAddress('cuentas@uptask.com', 'uptask.com');     
@@ -61,7 +61,7 @@ class Email{
         $contenido = '<html>';
         $contenido .= "<p>Hola <strong>". $this->nombre." </strong>, has olvidado tu password en UpTask, solo sigue el siguiente
         enlace para recuperarlo</p>";
-        $contenido .= "<p>Presiona aquí: <a href='http://localhost:3000/reestablecer/" . $this->token . "'>Reestablecer passoword</a>"; 
+        $contenido .= "<p>Presiona aquí: <a href='http://localhost:3000/recuperar-password/" . $this->token . "'>Reestablecer passoword</a>"; 
         $contenido .= "<p>Si tu no creaste tu cuenta, puedes ignorar este mensaje</p>";
         $contenido .= '</html>';
 

@@ -59,8 +59,8 @@ class ActiveRecord{
         }
     }
 
-    public static function find($tabla,$email){
-        $query = "SELECT  *FROM ".static::$tabla." WHERE ${tabla} = '${email}' LIMIT 1";
+    public static function find($atributo,$email){
+        $query = "SELECT  *FROM ".static::$tabla." WHERE ${atributo} = '${email}' LIMIT 1";
         $resultado =  self::consultarSQL($query);
 
         return array_shift($resultado);

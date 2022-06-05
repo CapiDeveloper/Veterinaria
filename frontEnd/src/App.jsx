@@ -4,15 +4,17 @@ import Login from './paginas/login';
 import Registrar from './paginas/registrar';
 import OlvidePassword from './paginas/OlvidePassword';
 import ConfirmarCuenta from './paginas/ConfirmarCuenta';
+import RecuperarPassword from './paginas/RecuperarPassword';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<AuthLayout/>}>
-          <Route index element={<Login />} />
+          <Route index element={<Login/>} />
           <Route path='registrar-cuenta' element={<Registrar/>} />
           <Route path='olvide-password' element={<OlvidePassword/>} />
+          <Route path='recuperar-password/:token' element={<RecuperarPassword/>} />
           <Route path='confirmar-cuenta/:token' element={<ConfirmarCuenta/>} />
         </Route>
       </Routes>

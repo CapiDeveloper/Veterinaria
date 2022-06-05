@@ -40,41 +40,30 @@ class VeterinarioController{
       }// fin post
     }
     public static function confirmar(){
-      $alerta = [];
+      $confirmacion = [];
+      $token = $_GET['token'];
+      //Encontrar al usuario con este token
+      $usuario = Veterinarios::find('token',$token);
 
-      $tokenURL = $_GET['token'];
-      $existeToken = Veterinarios::find('token',$tokenURL);
-
-      if($existeToken){
-
-        $array = [
-          'id'=> $existeToken->id,
-          'nombre' => $existeToken->nombre,
-          'password' => $existeToken->password,
-          'email' => $existeToken->email,
-          'telefono' => $existeToken->telefono,
-          'web' => $existeToken->web,
-          'confirmado' => true,
-          'token' => NULL
-        ];
-
-        $usuario = new Veterinarios($array);
-        // Actualizado
-        $resultado = $usuario->actualizar();
-        $alerta = [
-          'valido'=>true,
-          'mensaje'=>'Token valido'
-        ];
+      if (empty($usuario)) {
+          //No se encontro un usuario con ese token
+          $confirmacion = [
+            'detalle'=>'Token no valido',
+            'valido' => true
+          ];
       }else{
-        //Alerta de error
-        $alerta = [
-          'valido'=>false,
-          'mensaje'=>'Token no valido'
+        $confirmacion = [
+          'detalle'=>'Token valido',
+          'valido'=> false
         ];
+        //Confirmar la cuenta
+        $usuario->confirmado = 1;
+        $usuario->token=null;
+
+        //Guardar en la BD
+        $usuario->guardar();
       }
-
-      echo json_encode($existeToken);
-
+          echo json_encode($confirmacion);
     }
     public static function autenticar(){
       if ($_SERVER["REQUEST_METHOD"] === 'POST') {
@@ -144,45 +133,82 @@ class VeterinarioController{
 
       public static function olvidePassword(){
         if ($_SERVER["REQUEST_METHOD"] === 'POST') {
-
+          $alerta = [];
           $usuario =  Veterinarios::find('email',$_POST['email']);
 
           // Si no existe agregar mensaje de errores
           if (!$usuario) {
             //error no existe usuario
+            $alerta =[
+              'mensaje' => 'No existe usuario',
+              'error' => true
+            ];
+            echo json_encode($alerta);
             return;
           }
 
-          // ** Almacenar en la bd **
           // Generar token en BD
           $usuario->generarToken();
 
           $resultado =  $usuario->guardar();
+          
+          $alerta = [
+            'mensaje'=> 'Usuario existe, revide su email para recuperarla',
+            'error'=> false
+          ];
 
+          $email = new Email($usuario->nombre,$usuario->email,$usuario->token);
+          $email->enviarInstrucciones();
+          echo json_encode($alerta);
         }
 
       }
       public static function comprobarToken(){
-        $token = $_GET['token'];
-        if(!$token) header('location: /api/');
-        $existeUsuario = Veterinarios::find('token',$token);
-        if (!$existeUsuario) {
-          // debuguear('El usuario no existe');
-          echo 'El usuario no existe';
-        };  
+        $array = [];
 
-        if ($_SERVER["REQUEST_METHOD"] === 'POST') {
-          $existeUsuario->sincronizar($_POST);
-          // Eliminamos el token
-          $existeUsuario->token = null;
-          // hasheamos password
-          $existeUsuario->hashearPassoword();
-          // guardando
-          $resultado = $existeUsuario->guardar();
-          if ($resultado) {
-            header('location: /api');
-          }
-        }
+            $token = $_GET['token'];
+            if(!$token) header('location: http://localhost:3000/');
+
+            $existeUsuario = Veterinarios::find('token',$token);
+            if (!$existeUsuario) {
+              // debuguear('El usuario no existe');
+              $array = [
+                'mensaje'=>'El usuario no existe',
+                'error'=>true
+              ];
+              echo json_encode($array);
+            }else{
+              $array = [
+                'mensaje'=>'Coloca tu nuevo password',
+                'error'=>false
+              ];
+              echo json_encode($array);
+            }
       }
-}
+
+      public static function nuevoPassword(){
+        if ($_SERVER["REQUEST_METHOD"] === 'POST') {
+          $password = $_POST['password'];
+          $existeVeterinario = Veterinarios::find('token',$_POST['token']);
+          // echo json_encode($existeUsuario);
+          // return;
+          if ($existeVeterinario) {
+            
+            $existeVeterinario->sincronizar($_POST);
+            // Eliminamos el token
+            $existeVeterinario->token = null;
+            // hasheamos password
+            $existeVeterinario->hashearPassoword();
+            // guardando
+            $resultado = $existeVeterinario->guardar();
+
+            $resultado = [
+              'mensaje'=>'Password Modificado correctamente',
+              'error'=>false
+            ];
+            echo json_encode($resultado);  
+          };
+       }
+      }
+  }
 ?>

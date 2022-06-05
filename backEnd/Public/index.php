@@ -2,7 +2,6 @@
     include_once __DIR__.'/../Includes/app.php';
 
     // Cabeceras para otros dominios puedan hacer peticiones
-    $dominioPermitido = "http://localhost:3000";
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: content-type");
     header("Access-Control-Allow-Methods: OPTIONS,GET,PUT,POST,DELETE");
@@ -20,9 +19,10 @@
     $router->post('/api/veterinarios/login',[VeterinarioController::class,'autenticar']);
 
     $router->post('/api/veterinarios/olvide-password',[VeterinarioController::class,'olvidePassword']);
+    $router->post('/api/veterinarios/nuevo-password',[VeterinarioController::class,'nuevoPassword']);
+    
     $router->get('/api/veterinarios/establecer-password',[VeterinarioController::class,'comprobarToken']);
     $router->post('/api/veterinarios/nuevo-password',[VeterinarioController::class,'nuevoPassword']);
-    $router->post('/api/veterinarios/establecer-password',[VeterinarioController::class,'comprobarToken']);
 
     // Ruta protegida con JWT
     $router->get('/api/veterinarios/perfil',[VeterinarioController::class,'perfil']);
