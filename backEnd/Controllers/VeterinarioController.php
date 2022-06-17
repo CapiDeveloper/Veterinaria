@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Firebase\JWT\JWT;
+use ReallySimpleJWT\Token;
 
 include_once __DIR__.'/../Includes/app.php';
 
@@ -67,49 +68,73 @@ class VeterinarioController{
     }
     public static function autenticar(){
       if ($_SERVER["REQUEST_METHOD"] === 'POST') {
+
+        $array = [];
+
         $email = $_POST['email'];
         $password = $_POST['password'];
+
         //Verificar si existe usuario
         $existeUsuario = Veterinarios::find('email',$email);
         if ($existeUsuario) {
           // verificar confirmacion
-          if ($existeUsuario->confirmado == 'true') {
+          if ($existeUsuario->confirmado == '0') {
 
             // Confirmar password
               if (password_verify($password,$existeUsuario->password)) {
+                
+                $data = [
+                  'id' => $existeUsuario->id,
+                  'nombre' => $existeUsuario->nombre,
+                  'exp' => time() + 10
+              ];
+              
+              $secret = 'Hello&MikeFooBar123';
+              
+              $token = Token::customPayload($data, $secret);
 
-                // Creacion de Token con JWT
-                $time = time();
-                  $token = [
-                    'iat' => $time, // Tiempo que inició el token
-                    'exp' => $time + (60*60), // Tiempo que expirará el token (+1 hora)
-                    'data' => [ // información del usuario
-                        'id' => $existeUsuario->id,
-                        'name' => $existeUsuario->nombre
-                    ]
-                  ];
+                $array = [
+                  'mensaje'=>$token,
+                  'error'=>false,
+                  'valido'=>true
+                ];
+                
 
-                  $jwt = JWT::encode($token, $_ENV['JWT_SECRET'],'HS256');
-                  echo json_encode($jwt);
               }else{
                 // passowrd incorrecto
-                echo 'password incorrecto';
+                $array = [
+                  'mensaje'=>'Password Incorrecto',
+                  'error'=>true
+                ];
               }
           }else{
             // No esta confirmado el usuario
-            echo 'No esta confirmado su cuenta';
+            $array = [
+              'mensaje'=>'Usuario no esta confirmado',
+              'error'=>true
+            ];
           }
 
         }else{
-          echo 'No existe usuario';
+          $array = [
+            'mensaje'=>'No existe usuario',
+            'error'=>true
+          ];
         }
+        echo json_encode($array);
+        return;
       }
     }
     public static function perfil(){
 
+      $array = [];
+      // En caso de que en el better no exista el jwt
         if (! preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
-          header('HTTP/1.0 400 Bad Request');
+          header('location: facebook.com');
           echo 'Token not found in request';
+          echo $array_error = [
+            'error'=>'token no valido'
+          ];
           exit;
        }
 
@@ -118,17 +143,35 @@ class VeterinarioController{
 
        //Verificar si el token existe
         if (!$jwt) {
-            header('HTTP/1.0 400 Bad Request');
+            header('location: http://localhost:3000');
             exit;
         }
 
-        // decodificacion JWT
-        $info= json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $jwt)[1]))));
+        // ** Comprobar si el token es valido o no y enviar al frontend
+        $tokenValido = TOKEN::validate($jwt,'Hello&MikeFooBar123');    
+        if ($tokenValido) {
+          // **Token Valido
+          // decodificacion JWT
+          $info= json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $jwt)[1]))));
+          $usuario = Veterinarios::find('id',$info->id);
+          unset($usuario->password);
+          unset($usuario->token);
+          unset($usuario->confirmado);
+          
+          $array = [
+            'mensaje'=> $usuario,
+            'valido'=>true
+          ];
+          
+        }else{
+          $array = [
+            'mensaje'=>'Token No valido',
+            'valido'=>false
+          ];
+        }
 
-        // id extraido de JWT
-        $idVeterinario =  $info->data->id;
-        $usuario = Veterinarios::find('id',$idVeterinario);
-
+        echo json_encode($array);
+        return;
       }
 
       public static function olvidePassword(){
@@ -206,9 +249,9 @@ class VeterinarioController{
               'mensaje'=>'Password Modificado correctamente',
               'error'=>false
             ];
-            echo json_encode($resultado);  
+            echo json_encode($resultado);
           };
-       }
+        }
       }
   }
 ?>

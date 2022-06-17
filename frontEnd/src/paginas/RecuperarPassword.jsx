@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Alertas from '../componentes/Alertas';
 
 const RecuperarPassword = () => {
@@ -7,6 +7,7 @@ const RecuperarPassword = () => {
   const [password,setPassword] = useState('')
   const [alerta, setAlerta] = useState({});
   const [tokenValido,setTokenValido] = useState(false);
+  const [passwordModificado,setPasswordModificado] = useState(false);
 
   //Leer parametro url
   const parametro = useParams();
@@ -23,6 +24,7 @@ const RecuperarPassword = () => {
         setAlerta({mensaje:resultado.mensaje,error:resultado.error});
         if (resultado.error === false) {
           setTokenValido(true);
+          setPasswordModificado(true);
         }
       } catch (error) {
         console.log(error);
@@ -90,6 +92,9 @@ const RecuperarPassword = () => {
                       uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto rounded-xl"/>
               </form>
             )
+          }
+          {passwordModificado&&
+            <Link className="block text-center my-5 text-gray-500" to="/">¿Ya tienes una cuenta? Iniciar Session</Link>
           }
         </div>       
     </>

@@ -18,6 +18,7 @@
     "require": {
         "firebase/php-jwt": "^6.1",
         "vlucas/phpdotenv": "^5.4",
-        "phpmailer/phpmailer": "^6.6"
+        "phpmailer/phpmailer": "^6.6",
+        "rbdwllr/reallysimplejwt": "^5.0"
     }
 }

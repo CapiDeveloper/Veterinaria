@@ -19,6 +19,10 @@ class ComposerStaticInit9774639c87c4657f42d309b97072e5a9
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
         ),
+        'R' => 
+        array (
+            'ReallySimpleJWT\\' => 16,
+        ),
         'P' => 
         array (
             'PhpOption\\' => 10,
@@ -60,6 +64,10 @@ class ComposerStaticInit9774639c87c4657f42d309b97072e5a9
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'ReallySimpleJWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rbdwllr/reallysimplejwt/src',
         ),
         'PhpOption\\' => 
         array (

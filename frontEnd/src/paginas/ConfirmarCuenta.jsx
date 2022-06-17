@@ -47,6 +47,10 @@ const ConfirmarCuenta = () => {
             alerta = {alerta}
           />
         }
+        {
+          cuentaConfirmada&&
+          <Link className="block text-center my-5 text-gray-500" to="/">¿Ya tienes una cuenta? Iniciar Session</Link>
+        }
       </div>
     </>
   )
