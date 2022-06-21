@@ -6,7 +6,7 @@ const ListadoPacientes = () => {
 
   return (
     <>
-        { pacientes.length? 
+        {  pacientes.length? 
         (<>
           <h2 className="font-black text-3xl text-center">Listado de pacientes</h2>
           <p className="text-xl mt-2 mb-10 text-center">Administra tus <span className="font-bold text-indigo-600"> pacientes y citas</span></p>

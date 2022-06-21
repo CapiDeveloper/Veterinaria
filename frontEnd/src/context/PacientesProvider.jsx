@@ -49,6 +49,7 @@ export const PacientesProvider = ({children})=>{
         info.append('hora', hora);
         info.append('sintomas', sintomas);
 
+        
         // Configuracion de permiso header
         const config = {
             headers:{

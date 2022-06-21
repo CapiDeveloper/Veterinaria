@@ -59,6 +59,7 @@ class ActiveRecord{
         }
     }
 
+    
     public static function where($atributo,$condicion){
         $query = "SELECT *FROM ".static::$tabla." WHERE ${atributo} = ${condicion}";
         $resultado = self::consultarSQL($query);

@@ -70,7 +70,7 @@ const RecuperarPassword = () => {
           {
             mensaje&&
             <Alertas
-              alerta = {alerta}
+              alerta = {alerta} 
             />
           }
           {

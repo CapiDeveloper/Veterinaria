@@ -9,6 +9,7 @@ const AuthProvider =  ({children})=>{
     const [auth,setAuth] = useState({});
 
     useEffect(() => {
+        
 
         const autenticarUsuario = async()=>{
 

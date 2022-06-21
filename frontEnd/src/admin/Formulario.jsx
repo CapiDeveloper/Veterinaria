@@ -20,6 +20,7 @@ const Formulario = () => {
 
     // Submit form
     const handle = (e)=>{
+        
         e.preventDefault();
         if ([nombre,propietario,email,telefono,fecha,hora,sintomas].includes('')) {
             setAlerta({mensaje:'Todos los campos son obligatorios',error:true});

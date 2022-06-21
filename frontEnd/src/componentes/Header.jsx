@@ -6,7 +6,7 @@ const Header = () => {
   const {cerrarSession} = useAuth();
 
   return (
-    <>
+     <>
         <header className="py-10 bg-indigo-600">
             <div className="container mx-auto flex justify-between items-center flex-col lg:flex-row gap-4">
                 <h1 className="font-bold text-2xl text-indigo-200 text-center">Administrador de pacientes de <span className="text-white font-black"> Veterinaria</span></h1>

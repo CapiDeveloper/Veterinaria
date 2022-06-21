@@ -14,6 +14,7 @@ const ConfirmarCuenta = () => {
   // Obtener parametro URL
   const params = useParams();
   const {token} = params;
+  
 
   // Enviar url al backend en el momento que cargue la pagina
   useEffect(()=>{

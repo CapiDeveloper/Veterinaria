@@ -9,7 +9,6 @@
     require_once __DIR__.'./bd.php';
     require_once __DIR__.'./functions.php';
 
-    
     //Conexcion a bd
     use Model\ActiveRecord;
     ActiveRecord::conectarDB($bd);

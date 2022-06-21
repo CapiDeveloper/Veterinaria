@@ -51,7 +51,6 @@ const Login = () => {
       setAlerta({});      
   }
   const {mensaje} = alerta;
-  
 
   return (
     <>

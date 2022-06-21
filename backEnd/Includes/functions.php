@@ -6,6 +6,7 @@
         exit;
     }
 
+    
     function auth(){
         if(!$_SESSION['login']){
             header('location: /api');

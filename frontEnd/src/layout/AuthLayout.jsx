@@ -6,6 +6,7 @@ const AuthLayout = () => {
             <Outlet />
         </main>
     </>
+    
   )
 }
 

@@ -4,6 +4,7 @@
     class Pacientes extends ActiveRecord{
 
         public static $columnasDB = ['id','nombre','propietario','email','telefono','fecha','hora','sintomas','veterinarioId'];
+
         public static $tabla = 'pacientes';
 
         public function __construct($args=[]){

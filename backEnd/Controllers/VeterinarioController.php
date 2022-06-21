@@ -157,6 +157,7 @@ class VeterinarioController{
           unset($usuario->token);
           unset($usuario->confirmado);
           
+          
           $array = [
             'mensaje'=> $usuario,
             'valido'=>true

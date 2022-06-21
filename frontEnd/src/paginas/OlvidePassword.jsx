@@ -27,7 +27,6 @@ const OlvidePassword = () => {
     } catch (error) {
       console.log('error');
     }
-    
   }
   const {mensaje} = alerta;
   return (

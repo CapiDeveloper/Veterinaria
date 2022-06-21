@@ -77,6 +77,7 @@ class PacienteController{
           exit;
        }
 
+       
        //En $jwt esta almacenado el token que tiene el usuario en el navegador
        $jwt = $matches[1];
 

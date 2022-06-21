@@ -32,7 +32,7 @@ function App() {
               <Route path='recuperar-password/:token' element={<RecuperarPassword/>} />
               <Route path='confirmar-cuenta/:token' element={<ConfirmarCuenta/>} />
             </Route>
-              {/* Rutas protejidas */}
+              {/* Rutas protejidas admin*/}
             <Route path='/admin' element={<RutaProtegida />}>
               <Route index element={<AdministrarPacientes />} />
             </Route>
