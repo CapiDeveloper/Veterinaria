@@ -2,7 +2,6 @@
 
 namespace Controller;
 
-use Firebase\JWT\JWT;
 use ReallySimpleJWT\Token;
 
 include_once __DIR__.'/../Includes/app.php';

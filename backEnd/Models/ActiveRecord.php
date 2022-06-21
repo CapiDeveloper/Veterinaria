@@ -59,6 +59,12 @@ class ActiveRecord{
         }
     }
 
+    public static function where($atributo,$condicion){
+        $query = "SELECT *FROM ".static::$tabla." WHERE ${atributo} = ${condicion}";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
     public static function find($atributo,$email){
         $query = "SELECT  *FROM ".static::$tabla." WHERE ${atributo} = '${email}' LIMIT 1";
         $resultado =  self::consultarSQL($query);

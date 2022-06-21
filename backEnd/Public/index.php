@@ -27,7 +27,7 @@
 
     use MVC\Router;
     use Controller\VeterinarioController;
-    use Model\PacienteController;
+    use Controller\PacienteController;
 
     $router = new Router;
 
@@ -47,8 +47,8 @@
     $router->get('/api/veterinarios/perfil',[VeterinarioController::class,'perfil']);
 
     // **               RUTAS DE PACIENTE              **
-    $router->post('/api/pacientes',[PacienteController::class,'agregarPaciente']);
-    $router->get('/api/pacientes',[PacienteController::class,'obtenerPacientes']);
+    $router->post('/api/pacientes/agregar',[PacienteController::class,'agregarPaciente']);
+    $router->get('/api/pacientes/listar',[PacienteController::class,'obtenerPacientes']);
 
     $router->comprobarRutas();
 

@@ -16,26 +16,28 @@ import AdministrarPacientes from './admin/AdministrarPacientes';
 
 // Context API
 import {AuthProvider} from './context/AuthProvider';
-
+import { PacientesProvider } from './context/PacientesProvider';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          {/* Rutas no protegidas */}
-          <Route path='/' element={<AuthLayout/>}>
-            <Route index element={<Login/>} />
-            <Route path='registrar-cuenta' element={<Registrar/>} />
-            <Route path='olvide-password' element={<OlvidePassword/>} />
-            <Route path='recuperar-password/:token' element={<RecuperarPassword/>} />
-            <Route path='confirmar-cuenta/:token' element={<ConfirmarCuenta/>} />
-          </Route>
-            {/* Rutas protejidas */}
-          <Route path='/admin' element={<RutaProtegida />}>
-            <Route index element={<AdministrarPacientes />} />
-          </Route>
-        </Routes>
+        <PacientesProvider>
+          <Routes>
+            {/* Rutas no protegidas */}
+            <Route path='/' element={<AuthLayout/>}>
+              <Route index element={<Login/>} />
+              <Route path='registrar-cuenta' element={<Registrar/>} />
+              <Route path='olvide-password' element={<OlvidePassword/>} />
+              <Route path='recuperar-password/:token' element={<RecuperarPassword/>} />
+              <Route path='confirmar-cuenta/:token' element={<ConfirmarCuenta/>} />
+            </Route>
+              {/* Rutas protejidas */}
+            <Route path='/admin' element={<RutaProtegida />}>
+              <Route index element={<AdministrarPacientes />} />
+            </Route>
+          </Routes>
+          </PacientesProvider>
       </AuthProvider>
     </BrowserRouter>
   )
