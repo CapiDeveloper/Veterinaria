@@ -49,6 +49,7 @@
     // **               RUTAS DE PACIENTE              **
     $router->post('/api/pacientes/agregar',[PacienteController::class,'agregarPaciente']);
     $router->get('/api/pacientes/listar',[PacienteController::class,'obtenerPacientes']);
+    $router->post('/api/pacientes/eliminar',[PacienteController::class,'eliminarPacientes']);
 
     $router->comprobarRutas();
 

@@ -30,7 +30,8 @@ class ActiveRecord{
         $resultado = self::$db->query($query);
         return [
            'resultado' =>  $resultado,
-           'id' => self::$db->insert_id
+           'id' => self::$db->insert_id,
+           'actualizado'=> false
         ];
     }
 
@@ -49,7 +50,10 @@ class ActiveRecord{
         $query .= " LIMIT 1 ";
         
         $resultado = self::$db->query($query);
-        return $resultado;
+        return [
+            'resultado' =>  $resultado,
+           'actualizado'=> true
+        ];
     }
     
     public function sincronizar($atributos){
@@ -57,6 +61,13 @@ class ActiveRecord{
             if(property_exists($key,$value) && !is_null($value));
             $this->$key = $value;
         }
+    }
+
+    public static function eliminar($id){
+        $query = "DELETE FROM ". static::$tabla ." WHERE id = ${id}";
+        
+        $resultado = self::$db->query($query);
+        return $resultado;
     }
 
     

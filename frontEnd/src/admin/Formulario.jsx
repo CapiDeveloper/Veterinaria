@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Alertas from "../componentes/Alertas";
 import usePacientes from "../hooks/usePacientes";
 
@@ -12,11 +12,28 @@ const Formulario = () => {
     const [fecha, setFecha] = useState('');
     const [hora, setHora] = useState('');
     const [sintomas, setSintomas] = useState('');
+
+    const [id,setId] = useState(null);
     // alerta
     const [alerta,setAlerta] = useState({});
 
     // Paciente Provider
-    const {guardarPaciente} = usePacientes();
+    const {guardarPaciente,paciente} = usePacientes();
+
+    
+    useEffect(() => {
+        if (paciente?.id) {
+            setNombre(paciente.nombre);
+            setPropietario(paciente.propietario);
+            setEmail(paciente.email);
+            setTelefono(paciente.telefono);
+            setFecha(paciente.fecha);
+            setHora(paciente.hora);
+            setSintomas(paciente.sintomas);
+            setId(paciente.id);
+        }
+    }, [paciente])
+
 
     // Submit form
     const handle = (e)=>{
@@ -27,14 +44,16 @@ const Formulario = () => {
             return;
         }
         setAlerta({});
-        guardarPaciente({nombre,propietario,email,telefono,fecha,hora,sintomas});
+
+        guardarPaciente({id,nombre,propietario,email,telefono,fecha,hora,sintomas});
+        
     }
     const {mensaje} = alerta;
     return (
     <>
-        <p className="text-2xl text-center mb-3 uppercase font-bold">
-            Añade tus pacientes y <span className="font-black text-indigo-600">administralos</span>
-        </p>
+        <h2 className="font-black text-3xl text-center">Administrador de pacientes</h2>
+        <p className="text-xl mt-2 mb-10 text-center">Añade tus pacientes y <span className="font-bold text-indigo-600"> administralos</span></p>
+        
         <form 
             className="bg-white py-10 px-5 mb-10 md:mb-5 shadow-2xl rounded-md"
             onSubmit={handle}
@@ -133,7 +152,7 @@ const Formulario = () => {
                     className="border-2 p-2 w-full mt-2 rounded-md border-indigo-300 placeholder-gray-400"
                 />
             </div>
-            <input type="submit" value="Agregar Paciente" className="bg-indigo-600 text-white p-3 w-full uppercase font-bold cursor-pointer hover:bg-indigo-800 transition-colors" />
+            <input type="submit" value={id?'Guardar cambios':'Crear Paciente'} className="bg-indigo-600 text-white p-3 w-full uppercase font-bold cursor-pointer hover:bg-indigo-800 transition-colors" />
         </form>
         {
             mensaje&&

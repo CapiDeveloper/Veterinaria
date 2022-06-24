@@ -44,10 +44,10 @@ class PacienteController{
               $resultado = $paciente->guardar();
 
               if ($resultado['resultado']) {
-                // unset($_POST['password']);
                 $array = [
-                  'mensaje'=>$_POST,
-                  'valido'=>true
+                  'mensaje'=>$paciente,
+                  'valido'=>true,
+                  'actualizado'=>$resultado['actualizado']
                 ];
               }else{
                 $array = [
@@ -109,5 +109,25 @@ class PacienteController{
         }
     echo json_encode($array);
     return;
+    }
+
+    public static function eliminarPacientes(){
+      if ($_SERVER["REQUEST_METHOD"] === 'POST') {
+        $array = [];
+        $resultado = Pacientes::eliminar($_POST['id']);
+        if ($resultado) {
+          $array = [
+            'mensaje'=>'Eliminado correctamente',
+            'valido'=>true
+          ];
+        }else{
+          $array = [
+            'mensaje'=>'Problemas al eliminar el registro, consulte con soporte',
+            'valido'=>false
+          ];
+        }
+        echo json_encode($array);
+        return;
+      }
     }
 }
