@@ -45,6 +45,8 @@
 
     // Ruta protegida con JWT
     $router->get('/api/veterinarios/perfil',[VeterinarioController::class,'perfil']);
+    $router->post('/api/veterinarios/actualizar-perfil',[VeterinarioController::class,'actualizarPerfil']);
+    $router->post('/api/veterinarios/actualizar-password',[VeterinarioController::class,'actualizarPassword']);
 
     // **               RUTAS DE PACIENTE              **
     $router->post('/api/pacientes/agregar',[PacienteController::class,'agregarPaciente']);

@@ -253,5 +253,91 @@ class VeterinarioController{
           };
         }
       }
+      public static function actualizarPerfil(){
+        $array = [];
+        if ($_SERVER["REQUEST_METHOD"] === 'POST') {
+          $email = $_POST['email'];
+          $existeVeterinario = Veterinarios::find('email',$email);
+          // Verificar que exista el veterinario
+          if ($_POST['id'] == $existeVeterinario->id) {
+
+              $existeVeterinario->sincronizar($_POST);
+              $resultado = $existeVeterinario->guardar();
+              if ($resultado) {
+                $array = [
+                  'mensaje'=>'Guardado Correctamente',
+                  'valido'=>false
+                ];
+                
+              }else{
+                $array = [
+                  'mensaje'=>'Hubo un error en la actualizacion, revise bien los datos',
+                  'valido'=>true
+                ];
+              }
+          }else{
+            $array = [
+              'mensaje'=>'Este email ya esta en uso',
+              'valido'=>true
+            ];
+          }
+          echo json_encode($array);
+          return;
+        }
+      }
+      public static function actualizarPassword(){
+
+        $array = [];
+
+        if ($_SERVER["REQUEST_METHOD"] === 'POST') {
+
+          // leer datos
+          $passwordActual = $_POST['actual'];
+          $passwordNuevo = $_POST['nuevo'];
+          $idVeterinario = $_POST['id'];
+
+          // Comprobar que el vet exista
+          $existeVeterinario = Veterinarios::find('id',$idVeterinario);
+          if($existeVeterinario->id === $idVeterinario){
+            
+            // Comprobar su password
+            if(password_verify($passwordActual,$existeVeterinario->password)){
+
+              // Almacenar nuevo password
+              $existeVeterinario->password = $passwordNuevo;
+              $existeVeterinario->hashearPassoword();
+              $resultado = $existeVeterinario->guardar();
+
+              if ($resultado) {
+                //Guardado correctamente
+                $array = [
+                  'mensaje'=>'Guardado correctamente',
+                  'valido'=>false
+                ];
+              }else{
+                // No se guardo el password
+                $array = [
+                  'mensaje'=>'Hubo un error, comunicarse con soporte',
+                  'valido'=>true
+                ];
+              }
+            }else{
+              // Password incorrecto
+              $array = [
+                'mensaje'=>'Password actual incorrecto',
+                'valido'=>true
+              ];
+            }
+          }else{
+            // No tiene permisos para cambiar password
+            $array = [
+              'mensaje'=>'No tiene permisos para cambiar el password',
+              'valido'=>true
+            ];
+          }
+          echo json_encode($array);
+          return;
+        }
+      }
   }
 ?>

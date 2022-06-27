@@ -28,7 +28,6 @@ const AuthProvider =  ({children})=>{
             }
             try {
                 const {data} = await axios(url,config);
-                console.log(data);
                 setAuth(data);
 
             } catch (error) {
@@ -39,6 +38,66 @@ const AuthProvider =  ({children})=>{
         autenticarUsuario();
     }, []);
 
+    // Actualizar perfil
+    const actualizarPerfil = async(veterinario)=>{
+        let resultado = {
+            mensaje:'',
+            valido:true
+        }
+        const url = 'http://localhost:4000/api/veterinarios/actualizar-perfil';
+        const datos = new FormData();
+        datos.append('id', veterinario.id);
+        datos.append('nombre', veterinario.nombre);
+        datos.append('email', veterinario.email);
+        datos.append('telefono', veterinario.telefono);
+        datos.append('web', veterinario.web);
+
+        try {
+            
+            const {data} = await axios.post(url,datos);
+                resultado = {
+                mensaje:data.mensaje,
+                valido:data.valido
+            }
+        } catch (error) {
+                resultado = {
+                mensaje:'No se ha podido actualizar su perfil, intentelo mas tarde',
+                valido:true
+            }
+        }
+        return resultado;
+    }
+
+    const guardarPassword = async(info)=>{
+
+        const url = 'http://localhost:4000/api/veterinarios/actualizar-password';
+
+        const datos = new FormData();
+        datos.append('actual', info.pwd_actual);
+        datos.append('nuevo', info.pwd_nuevo);
+        datos.append('id', auth.mensaje.id);
+
+        let resultado = {
+            mensaje:'',
+            valido:true
+        }
+
+        try {
+            const {data} = await axios.post(url,datos);
+            resultado = {
+                mensaje:data.mensaje,
+                valido:data.valido
+            }
+        } catch (error) {
+            resultado = {
+                mensaje:'Comuniquese con soporte, hubo un problema',
+                valido:true
+            }
+        }
+        return resultado;
+    }
+
+    // Cerrar sesion
     const cerrarSession = ()=>{
         localStorage.removeItem('token');
         setAuth({});
@@ -50,6 +109,8 @@ const AuthProvider =  ({children})=>{
                 auth,
                 setAuth,
                 cargando,
+                actualizarPerfil,
+                guardarPassword,
                 cerrarSession
             }}
         >

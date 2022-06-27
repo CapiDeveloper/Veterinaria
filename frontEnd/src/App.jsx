@@ -13,10 +13,12 @@ import RecuperarPassword from './paginas/RecuperarPassword';
 
 // Rutas paginas protegidas
 import AdministrarPacientes from './admin/AdministrarPacientes';
+import EditarPerfil from './admin/EditarPerfil';
 
 // Context API
 import {AuthProvider} from './context/AuthProvider';
 import { PacientesProvider } from './context/PacientesProvider';
+import CambiarPassword from './admin/CambiarPassword';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
               {/* Rutas protejidas admin*/}
             <Route path='/admin' element={<RutaProtegida />}>
               <Route index element={<AdministrarPacientes />} />
+              <Route path='perfil' element={<EditarPerfil />} />
+              <Route path='cambiar-password' element={<CambiarPassword />} />
             </Route>
           </Routes>
           </PacientesProvider>
